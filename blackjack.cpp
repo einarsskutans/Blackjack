@@ -77,12 +77,11 @@ class Blackjack {
             Player* player = new Player("Cena");
             Player* dealer = new Player("Weewee");
             while (gamestate) { // Main blackjack loop
-                player->ResetDeck();
                 std::string input = "1";
-                for (; player->GetDeckSum() < 22; ) { // Taking cards 1/3
-                    player->Hit(); // Take 2 cards
-                    player->Hit();
-
+                player->ResetDeck();
+                player->Hit(); // Take 2 cards
+                player->Hit();
+                for (; player->GetDeckSum() < 21; ) { // Taking cards 1/3
                     player->PrintDeck();
                     std::cout << "Total sum: " << player->GetDeckSum() << " - type 0 to pass.\n";
                     std::cin >> input;
@@ -94,11 +93,11 @@ class Blackjack {
                     }
                 }
 
-                if (player->GetDeckSum() > 21) { // Card checking 2/3
-                    std::cout << player->GetPlayerName() << " lost\n";
-                }
                 if (player->GetDeckSum() == 21) {
-                    std::cout << player->GetPlayerName() << " won\n";
+                    std::cout << player->GetPlayerName() << " wins\n";
+                }
+                if (player->GetDeckSum() > 21) {
+                    std::cout << player->GetPlayerName() << " loses\n";
                 }
 
             }
