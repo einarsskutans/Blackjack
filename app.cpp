@@ -7,6 +7,9 @@ class App {
     public:
         // Raylib
         void Init() {
+            Blackjack* blackjack = new Blackjack();
+            blackjack->Run();
+
             InitWindow(screensize.first, screensize.second, "Test");
             SetTargetFPS(60);
         }
@@ -16,8 +19,6 @@ class App {
                 ClearBackground(BLACK);
 
                 DrawCircle(200,200,50, WHITE);
-                Blackjack* blackjack = new Blackjack();
-                blackjack->Run();
 
                 EndDrawing();
             }
