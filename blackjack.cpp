@@ -75,12 +75,16 @@ class Blackjack {
         // Core
         void Run() {
             Player* player = new Player("Cena");
-            Player* dealer = new Player("Weewee");
+
             while (gamestate) { // Main blackjack loop
                 std::string input = "1";
                 player->ResetDeck();
                 player->Hit(); // Take 2 cards
                 player->Hit();
+
+                player->PrintDeck();
+                std::cout << "Total sum: " << player->GetDeckSum() << "\n";
+
                 for (; player->GetDeckSum() < 21; ) { // Taking cards 1/3
                     player->PrintDeck();
                     std::cout << "Total sum: " << player->GetDeckSum() << " - type 0 to pass.\n";

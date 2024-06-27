@@ -9,6 +9,7 @@
 		"**/*.exe": true,
 	},
 	"files.associations": {
+		"utility": "cpp",
 		"iostream": "cpp",
 		"array": "cpp",
 		"atomic": "cpp",
@@ -43,7 +44,6 @@
 		"system_error": "cpp",
 		"tuple": "cpp",
 		"type_traits": "cpp",
-		"utility": "cpp",
 		"initializer_list": "cpp",
 		"iosfwd": "cpp",
 		"istream": "cpp",

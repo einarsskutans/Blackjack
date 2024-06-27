@@ -1,23 +1,13 @@
-#include <iostream>
-#include <raylib.h>
-#include "app.cpp"
-#include "blackjack.cpp"
-
-using namespace std;
+#include "include/app.h"
 
 int main () {
-    
-    /*
-    App* blackjack = new App();
-    blackjack->Init();
-    blackjack->Run();
+    App* app = new App();
+    app->Init();
+    app->Run();
 
-    delete blackjack;
-    */
+    std::cout << "hello";
 
-    Blackjack* blackjack = new Blackjack();
-    blackjack->Run();
-    delete blackjack;
+    delete app;
 
     return 0;
 }
