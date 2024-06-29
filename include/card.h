@@ -7,6 +7,7 @@ class Card : public Sprite {
     public:
         Card(std::pair<int, int> ppos, std::pair<int, int> pvel, std::pair<int, int> psize);
         int GetValue();
+        void SetValue(int newvalue);
         void Draw();
     private:
         int value;

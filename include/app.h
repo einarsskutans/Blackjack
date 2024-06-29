@@ -5,13 +5,12 @@
 #include <raylib.h>
 #include <utility>
 
+const std::pair<int, int> SCREENSIZE = {450, 450};
+
 class App {
     public:
         void Init();
         void Run();
-
-    private:
-        std::pair<int, int> screensize{450, 450};
 };
 
 #endif
