@@ -2,6 +2,7 @@
 #define CARD_H
 
 #include "sprite.h"
+#include "app.h"
 
 class Card : public Sprite {
     public:

@@ -14,5 +14,15 @@ void Card::SetValue(int newvalue) {
     value = newvalue;
 }
 void Card::Draw() {
-    DrawRectangle(GetPos().first, GetPos().second, GetSize().first, GetSize().second, WHITE);
+    int offset = GetSize().first * 0.08;
+    int textsize = GetSize().first * 0.4;
+    DrawRectangle(GetPos().first - GetSize().first/2, GetPos().second - GetSize().second/2, GetSize().first, GetSize().second, BLACK); // BLACK background -> outline
+    DrawRectangle(
+        (GetPos().first - GetSize().first/2) + offset,
+        (GetPos().second - GetSize().second/2) + offset,
+        GetSize().first - offset*2,
+        GetSize().second - offset*2,
+        WHITE
+    ); // WHITE foreground -> card
+    DrawText(TextFormat("%i", GetValue()), GetPos().first - textsize/4, GetPos().second - textsize/2, textsize, BLACK); // BLACK Card value
 }

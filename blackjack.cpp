@@ -27,8 +27,8 @@ std::string Player::GetPlayerName() {
 };
 
 bool Player::Hit() {
-    Card* card = new Card({100, SCREENSIZE.second*0.75}, {0, 0}, {50, 100});
-    card->SetValue(std::rand()%13);
+    Card* card = new Card({SCREENSIZE.first/2, SCREENSIZE.second/2}, {0, 0}, {60, 120});
+    card->SetValue(std::rand()%12+1);
     deck.push_back(card);
     return true;
 };
@@ -36,7 +36,7 @@ bool Player::Stand() {
     return true;
 };
 int Player::GetDeckSum() {
-    int sum;
+    int sum = 0;
     for (Card* card : deck) {
         sum += card->GetValue();
     }
@@ -75,8 +75,16 @@ void Player::ResetDeck() {
 };
 
 void Player::DrawCards() {
+    int cardGapX = -deck[0]->GetSize().first/4;
+    int cardWidth = deck[0]->GetSize().first;
+    int tableWidth = cardWidth * deck.size() + cardGapX * (deck.size() - 1);
+    int xpos = (SCREENSIZE.first/2 - tableWidth/2) + cardWidth / 2;
+    int ypos = deck[0]->GetPos().second;
     for (Card* card : deck) {
+        card->SetPos({xpos, ypos});
         card->Draw();
+        xpos += cardGapX + deck[0]->GetSize().first;
+        ypos += deck[0]->GetSize().first/4;
     }
 };
 
