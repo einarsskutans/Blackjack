@@ -24,7 +24,7 @@ class Player { // Also the dealer
         void ResetDeck();
 
         // Graphics
-        void DrawCards();
+        void DrawCards(std::pair<int, int> position, std::pair<int, int> offset);
 
     private:
         std::vector<Card*> deck;

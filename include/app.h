@@ -6,6 +6,7 @@
 #include <utility>
 
 const std::pair<int, int> SCREENSIZE = {450, 450};
+const int FPS = 60;
 
 class App {
     public:

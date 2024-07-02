@@ -5,7 +5,7 @@
 
 void App::Init() {
     InitWindow(SCREENSIZE.first, SCREENSIZE.second, "Test");
-    SetTargetFPS(60);
+    SetTargetFPS(FPS);
 
     // test
     
@@ -21,18 +21,25 @@ void App::Run() {
         START,
         TAKECARDS,
         DEALERCARDS,
-        END
+        WIN,
+        LOSS
     };
+    int ticks = 0;
 
     while (WindowShouldClose() == false){
+        ticks++;
+
         BeginDrawing();
         ClearBackground(GRAY);
 
+        DrawText(TextFormat("%i", ticks), 0, 0, 30, RED);
         DrawText(TextFormat("%i", player->GetDeckSum()), SCREENSIZE.first/4, SCREENSIZE.second/4, 30, BLACK);
 
         switch (gamestate)
         {
         case START: // Game start; take 2 cards
+            dealer->Hit();
+            dealer->Hit();
             player->Hit();
             player->Hit();
             gamestate = 1;
@@ -40,13 +47,13 @@ void App::Run() {
         case TAKECARDS: // Taking cards
             // Conditions
             if (player->GetDeckSum() > 21) {
-                gamestate = 3;
-                DrawText("You lose", SCREENSIZE.first/2, SCREENSIZE.second/4, 30, BLACK);
+                ticks = 0;
+                gamestate = 4;
                 break;
             }
             if (player->GetDeckSum() == 21) {
+                ticks = 0;
                 gamestate = 3;
-                DrawText("You win", SCREENSIZE.first/2, SCREENSIZE.second/4, 30, BLACK);
                 break;
             }
             //
@@ -58,6 +65,7 @@ void App::Run() {
                 player->Hit();
             }            
             if (IsKeyDown(KEY_X) && gamestate == 1 && keyIsUpX) {
+                ticks = 0;
                 keyIsUpX = false;
                 gamestate = 2;
                 break;
@@ -71,27 +79,48 @@ void App::Run() {
         
             break;
         case DEALERCARDS:
-            dealer->Hit();
-            if (dealer->GetDeckSum() > 21) {
-                gamestate = 3;
-                DrawText("You win", SCREENSIZE.first/2, SCREENSIZE.second/4, 30, BLACK);
+            dealer->DrawCards({SCREENSIZE.first/2, SCREENSIZE.second*0.2}, {10, 0});
+            if (ticks > FPS * 3) {
+                ticks = 0;
+                dealer->Hit();
+                if (dealer->GetDeckSum() > 21) {
+                    ticks = 0;
+                    gamestate = 3;
+                    break;
+                }
+                else if (dealer->GetDeckSum() < player->GetDeckSum()) {
+                    ticks = 0;
+                    gamestate = 4;
+                    break;
+                }
+            }
+        case WIN:
+            DrawText("You win", SCREENSIZE.first/2, SCREENSIZE.second/4, 30, BLACK);
+            if (ticks > FPS * 4) {
+                ticks = 0;
+                gamestate = 0;
+                player->ResetDeck();
+                dealer->ResetDeck();
                 break;
             }
-            if (dealer->GetDeckSum() > player->GetDeckSum()) {
-                gamestate = 3;
-                DrawText("You lose", SCREENSIZE.first/2, SCREENSIZE.second/4, 30, BLACK);
+            break;
+        case LOSS:
+            DrawText("You lose", SCREENSIZE.first/2, SCREENSIZE.second/4, 30, BLACK);
+            if (ticks > FPS * 4) {
+                ticks = 0;
+                gamestate = 0;
+                player->ResetDeck();
+                dealer->ResetDeck();
                 break;
             }
-        case END:
-            gamestate = 0;
-            player->ResetDeck();
             break;
 
         default:
             break;
         }
-        player->DrawCards(); // Always keep cards drawn
-
+        if (player->GetDeck().size() > 0) {
+            player->DrawCards({SCREENSIZE.first/2, SCREENSIZE.second*0.64}, {-player->GetDeck()[0]->GetSize().first/4, player->GetDeck()[0]->GetSize().second/4}); // Always keep cards drawn
+        }
         EndDrawing();
     }
     player->PrintDeck();
