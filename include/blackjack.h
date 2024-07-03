@@ -31,13 +31,13 @@ class Player { // Also the dealer
         std::string name;
 };
 
-class Blackjack {
+class House {
     public:
-        // Core
-        void Run();
+        static void GenerateDeck();
+        static Card* GetCard();
+        static std::vector<Card*> GetDeck();
     private:
-        std::vector<Card*> deck;
-        bool gamestate = true;
+        static std::vector<Card*> deck;
 };
 
 #endif

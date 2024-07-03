@@ -27,8 +27,9 @@ std::string Player::GetPlayerName() {
 };
 
 bool Player::Hit() {
-    Card* card = new Card({SCREENSIZE.first/2, SCREENSIZE.second/2}, {0, 0}, {64, 128});
-    card->SetValue(std::rand()%12+1);
+    //Card* card = new Card({SCREENSIZE.first/2, SCREENSIZE.second/2}, {0, 0}, {64, 128});
+    //card->SetValue(std::rand()%12+1);
+    Card* card = House::GetCard();
     deck.push_back(card);
     return true;
 };
@@ -87,39 +88,22 @@ void Player::DrawCards(std::vector<Texture2D> textures, std::pair<int, int> posi
     }
 };
 
-// Core
-void Blackjack::Run() {
-    Player* player = new Player("Cena");
-
-    while (gamestate) { // Main blackjack loop
-        std::string input = "1";
-        player->ResetDeck();
-        player->Hit(); // Take 2 cards
-        player->Hit();
-
-        player->PrintDeck();
-        std::cout << "Total sum: " << player->GetDeckSum() << "\n";
-
-        for (; player->GetDeckSum() < 21; ) { // Taking cards 1/3
-            player->PrintDeck();
-            std::cout << "Total sum: " << player->GetDeckSum() << " - type 0 to pass.\n";
-            std::cin >> input;
-            if (input == "0") {
-                break;
-            }
-            else {
-                player->Hit();
-            }
+// House
+std::vector<Card*> House::deck;
+void House::GenerateDeck() {
+    for (int value = 1; value < 14; value++) {
+        for (int row = 0; row < 4; row++) {
+            Card* card = new Card({SCREENSIZE.first/2, SCREENSIZE.second/2}, {0, 0}, {64, 128});
+            card->SetValue(value);
+            House::deck.push_back(card);
         }
-
-        if (player->GetDeckSum() == 21) {
-            std::cout << player->GetPlayerName() << " wins\n";
-        }
-        if (player->GetDeckSum() > 21) {
-            std::cout << player->GetPlayerName() << " loses\n";
-        }
-
     }
+}
+Card* House::GetCard() {
+    return House::deck[std::rand()%deck.size()];
+}
+std::vector<Card*> House::GetDeck() {
+    return House::deck;
 }
 
 #endif

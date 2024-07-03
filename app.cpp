@@ -59,6 +59,7 @@ void App::Run() {
         switch (gamestate)
         {
         case START: // Game start; take 2 cards
+            House::GenerateDeck();
             dealer->Hit();
             dealer->Hit();
             player->Hit();
