@@ -4,9 +4,11 @@
 #include "include/blackjack.h"
 
 void App::LoadImages() {
-    for (int i = 1; i < 13; i++) {
+    for (int i = 1; i < 16; i++) {
         Image cardImage = LoadImage(TextFormat("assets/card%i.png", i));
-        ImageResizeNN(&cardImage, 128, 128);
+        if (i < 14) { // For card assets only
+            ImageResizeNN(&cardImage, 128, 128);
+        }
         Texture2D cardTexture = LoadTextureFromImage(cardImage);
         UnloadImage(cardImage);
         textures.push_back(cardTexture);
@@ -14,7 +16,7 @@ void App::LoadImages() {
 }
 
 void App::Init() {
-    InitWindow(SCREENSIZE.first, SCREENSIZE.second, "Test"); 
+    InitWindow(SCREENSIZE.first, SCREENSIZE.second, "Blackjack >> NO SHUFFLE MECHANIC YET"); 
     LoadImages();
     SetTargetFPS(FPS);
 }
@@ -43,8 +45,12 @@ void App::Run() {
         DrawRectangle(0, SCREENSIZE.second/2, SCREENSIZE.first, SCREENSIZE.second/2, {0, 106, 78, 255});
         DrawText(TextFormat("%i", player->GetDeckSum()), 0+10, SCREENSIZE.second-40, 30, BLACK);
         DrawText(TextFormat("%i", dealer->GetDeckSum()), 0+10, SCREENSIZE.second/2-40, 30, BLACK);
+        DrawTexture(textures[13], SCREENSIZE.first-116, SCREENSIZE.second/2+16, WHITE);
+        DrawText("Hit", SCREENSIZE.first-82, SCREENSIZE.second/2+20, 24, WHITE);
+        DrawTexture(textures[14], SCREENSIZE.first-116, SCREENSIZE.second/2+64, WHITE);
+        DrawText("Stand", SCREENSIZE.first-82, SCREENSIZE.second/2+68, 24, WHITE);
 
-            //DrawText(TextFormat("%i", ticks), 0, 0, 30, RED); // uncomment for ticks debug
+        //DrawText(TextFormat("%i", ticks), 0, 0, 30, RED); // uncomment for ticks debug
 
         switch (gamestate)
         {
