@@ -41,10 +41,14 @@ void App::Run() {
         BeginDrawing();
 
         // Window deco
-        ClearBackground({ 0, 86, 59, 0});
-        DrawRectangle(0, SCREENSIZE.second/2, SCREENSIZE.first, SCREENSIZE.second/2, {0, 106, 78, 255});
-        DrawText(TextFormat("%i", player->GetDeckSum()), 0+10, SCREENSIZE.second-40, 30, BLACK);
-        DrawText(TextFormat("%i", dealer->GetDeckSum()), 0+10, SCREENSIZE.second/2-40, 30, BLACK);
+        ClearBackground(CASTLETON);
+        DrawRectangle(0, SCREENSIZE.second/2, SCREENSIZE.first, SCREENSIZE.second/2, {BANGLADESH});
+        
+        int dealersum = dealer->GetDeckSum();
+        if (player->GetDeckSum() > 21) DrawText(TextFormat("%i", player->GetDeckSum()), 0+10, SCREENSIZE.second-40, 30, ROSE);
+        else DrawText(TextFormat("%i", player->GetDeckSum()), 0+10, SCREENSIZE.second-40, 30, BLACK);
+        if (dealer->GetDeckSum() > 21) DrawText(TextFormat("%i", dealersum), 0+10, SCREENSIZE.second/2-40, 30, ROSE);
+        else DrawText(TextFormat("%i", dealersum), 0+10, SCREENSIZE.second/2-40, 30, BLACK);
         DrawTexture(textures[13], SCREENSIZE.first-116, SCREENSIZE.second/2+16, WHITE);
         DrawText("Hit", SCREENSIZE.first-82, SCREENSIZE.second/2+20, 24, WHITE);
         DrawTexture(textures[14], SCREENSIZE.first-116, SCREENSIZE.second/2+64, WHITE);
