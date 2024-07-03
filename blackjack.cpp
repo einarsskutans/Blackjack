@@ -92,9 +92,10 @@ void Player::DrawCards(std::vector<Texture2D> textures, std::pair<int, int> posi
 std::vector<Card*> House::deck;
 void House::GenerateDeck() {
     for (int value = 1; value < 14; value++) {
-        for (int row = 0; row < 4; row++) {
+        for (int symbol = 1; symbol < 5; symbol++) {
             Card* card = new Card({SCREENSIZE.first/2, SCREENSIZE.second/2}, {0, 0}, {64, 128});
             card->SetValue(value);
+            card->SetSymbol(symbol);
             House::deck.push_back(card);
         }
     }

@@ -14,6 +14,12 @@ int Card::GetValue() {
 void Card::SetValue(int newvalue) {
     value = newvalue;
 }
+int Card::GetSymbol() {
+    return symbol;
+}
+void Card::SetSymbol(int newsymbol) {
+    symbol = newsymbol;
+}
 void Card::Draw(std::vector<Texture2D> textures) {
-    DrawTexture(textures[value-1], GetPos().first - GetSize().first/2, GetPos().second - GetSize().second/2, WHITE);
+    DrawTexture(textures[value-1 + (symbol-1) * 13], GetPos().first - GetSize().first/2, GetPos().second - GetSize().second/2, WHITE);
 }

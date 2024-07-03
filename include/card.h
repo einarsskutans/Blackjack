@@ -10,10 +10,12 @@ class Card : public Sprite {
         Card(std::pair<int, int> ppos, std::pair<int, int> pvel, std::pair<int, int> psize);
         int GetValue();
         void SetValue(int newvalue);
+        int GetSymbol();
+        void SetSymbol(int newsymbol);
         void Draw(std::vector<Texture2D> textures);
     private:
         int value;
-        char* symbol; // Might not be relevant
+        int symbol; // Might not be relevant
 };
 
 #endif
