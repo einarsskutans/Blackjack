@@ -27,7 +27,7 @@ std::string Player::GetPlayerName() {
 };
 
 bool Player::Hit() {
-    Card* card = new Card({SCREENSIZE.first/2, SCREENSIZE.second/2}, {0, 0}, {60, 120});
+    Card* card = new Card({SCREENSIZE.first/2, SCREENSIZE.second/2}, {0, 0}, {64, 128});
     card->SetValue(std::rand()%12+1);
     deck.push_back(card);
     return true;

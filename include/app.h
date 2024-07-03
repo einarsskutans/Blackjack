@@ -6,7 +6,7 @@
 #include <utility>
 #include <vector>
 
-const std::pair<int, int> SCREENSIZE = {450, 450};
+const std::pair<int, int> SCREENSIZE = {720, 540};
 const int FPS = 60;
 
 class App {

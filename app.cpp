@@ -36,13 +36,15 @@ void App::Run() {
 
     while (WindowShouldClose() == false){
         ticks++;
-
         BeginDrawing();
-        ClearBackground(GRAY);
 
-        DrawText(TextFormat("%i", ticks), 0, 0, 30, RED);
-        DrawText(TextFormat("%i", player->GetDeckSum()), SCREENSIZE.first/6, SCREENSIZE.second/2, 30, BLACK);
-        DrawText(TextFormat("%i", dealer->GetDeckSum()), SCREENSIZE.first/6, SCREENSIZE.second/4, 30, BLACK); 
+        // Window deco
+        ClearBackground({ 0, 86, 59, 0});
+        DrawRectangle(0, SCREENSIZE.second/2, SCREENSIZE.first, SCREENSIZE.second/2, {0, 106, 78, 255});
+        DrawText(TextFormat("%i", player->GetDeckSum()), 0+10, SCREENSIZE.second-40, 30, BLACK);
+        DrawText(TextFormat("%i", dealer->GetDeckSum()), 0+10, SCREENSIZE.second/2-40, 30, BLACK);
+
+            //DrawText(TextFormat("%i", ticks), 0, 0, 30, RED); // uncomment for ticks debug
 
         switch (gamestate)
         {
@@ -107,7 +109,7 @@ void App::Run() {
             }
             break;
         case WIN:
-            DrawText("You win", SCREENSIZE.first/2, SCREENSIZE.second/2, 30, BLACK);
+            DrawText("You win", 0+10, SCREENSIZE.second/2 + 40, 30, BLACK);
             if (ticks > FPS * 2) {
                 ticks = 0;
                 gamestate = 0;
@@ -117,7 +119,7 @@ void App::Run() {
             }
             break;
         case LOSS:
-            DrawText("You lose", SCREENSIZE.first/2, SCREENSIZE.second/2, 30, BLACK);
+            DrawText("You lose", 0+10, SCREENSIZE.second/2 + 40, 30, BLACK);
             if (ticks > FPS * 2) {
                 ticks = 0;
                 gamestate = 0;
@@ -131,7 +133,7 @@ void App::Run() {
             break;
         }
         if (player->GetDeck().size() > 0) {
-            player->DrawCards(textures, {SCREENSIZE.first/2, SCREENSIZE.second*0.64}, {-player->GetDeck()[0]->GetSize().first/4, player->GetDeck()[0]->GetSize().second/4}); // Always keep cards drawn
+            player->DrawCards(textures, {SCREENSIZE.first/2, SCREENSIZE.second*0.64}, {-player->GetDeck()[0]->GetSize().first/4, player->GetDeck()[0]->GetSize().second/6}); // Always keep cards drawn
         }
         if (dealer->GetDeck().size() > 0) {
             dealer->DrawCards(textures, {SCREENSIZE.first/2, SCREENSIZE.second*0.2}, {10, 0});
