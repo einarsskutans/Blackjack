@@ -4,14 +4,17 @@
 #include <iostream>
 #include <raylib.h>
 #include <utility>
+#include <vector>
 
 const std::pair<int, int> SCREENSIZE = {450, 450};
 const int FPS = 60;
 
 class App {
     public:
+        void LoadImages();
         void Init();
         void Run();
+        std::vector<Texture2D> textures = {};
 };
 
 #endif

@@ -3,12 +3,20 @@
 #include "include/app.h"
 #include "include/blackjack.h"
 
-void App::Init() {
-    InitWindow(SCREENSIZE.first, SCREENSIZE.second, "Test");
-    SetTargetFPS(FPS);
+void App::LoadImages() {
+    for (int i = 1; i < 13; i++) {
+        Image cardImage = LoadImage(TextFormat("assets/card%i.png", i));
+        ImageResizeNN(&cardImage, 128, 128);
+        Texture2D cardTexture = LoadTextureFromImage(cardImage);
+        UnloadImage(cardImage);
+        textures.push_back(cardTexture);
+    }
+}
 
-    // test
-    
+void App::Init() {
+    InitWindow(SCREENSIZE.first, SCREENSIZE.second, "Test"); 
+    LoadImages();
+    SetTargetFPS(FPS);
 }
 void App::Run() {
     Player* player = new Player("Tom");
@@ -123,10 +131,10 @@ void App::Run() {
             break;
         }
         if (player->GetDeck().size() > 0) {
-            player->DrawCards({SCREENSIZE.first/2, SCREENSIZE.second*0.64}, {-player->GetDeck()[0]->GetSize().first/4, player->GetDeck()[0]->GetSize().second/4}); // Always keep cards drawn
+            player->DrawCards(textures, {SCREENSIZE.first/2, SCREENSIZE.second*0.64}, {-player->GetDeck()[0]->GetSize().first/4, player->GetDeck()[0]->GetSize().second/4}); // Always keep cards drawn
         }
         if (dealer->GetDeck().size() > 0) {
-            dealer->DrawCards({SCREENSIZE.first/2, SCREENSIZE.second*0.2}, {10, 0});
+            dealer->DrawCards(textures, {SCREENSIZE.first/2, SCREENSIZE.second*0.2}, {10, 0});
         }
         EndDrawing();
     }

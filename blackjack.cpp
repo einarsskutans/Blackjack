@@ -74,14 +74,14 @@ void Player::ResetDeck() {
     deck = {};
 };
 
-void Player::DrawCards(std::pair<int, int> position, std::pair<int, int> offset) {
+void Player::DrawCards(std::vector<Texture2D> textures, std::pair<int, int> position, std::pair<int, int> offset) {
     int cardWidth = deck[0]->GetSize().first;
     int tableWidth = cardWidth * deck.size() + offset.first * (deck.size() - 1);
     int xpos = (position.first - tableWidth/2) + cardWidth / 2;
     int ypos = position.second;//deck[0]->GetPos().second;
     for (Card* card : deck) {
         card->SetPos({xpos, ypos});
-        card->Draw();
+        card->Draw(textures);
         xpos += offset.first + deck[0]->GetSize().first;
         ypos += offset.second;
     }
