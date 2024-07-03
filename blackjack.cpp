@@ -91,6 +91,7 @@ void Player::DrawCards(std::vector<Texture2D> textures, std::pair<int, int> posi
 // House
 std::vector<Card*> House::deck;
 void House::GenerateDeck() {
+    House::deck = {};
     for (int value = 1; value < 14; value++) {
         for (int symbol = 1; symbol < 5; symbol++) {
             Card* card = new Card({SCREENSIZE.first/2, SCREENSIZE.second/2}, {0, 0}, {64, 128});
@@ -101,7 +102,10 @@ void House::GenerateDeck() {
     }
 }
 Card* House::GetCard() {
-    return House::deck[std::rand()%deck.size()];
+    int n = std::rand()%deck.size();
+    Card* card = House::deck[n];
+    deck.erase(deck.begin()+n);
+    return card;
 }
 std::vector<Card*> House::GetDeck() {
     return House::deck;

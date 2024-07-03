@@ -4,10 +4,13 @@
 #include "include/blackjack.h"
 
 void App::LoadImages() {
-    for (int i = 1; i < 55; i++) {
+    for (int i = 1; i < 56; i++) {
         Image cardImage = LoadImage(TextFormat("assets/card%i.png", i));
         if (i < 53) { // For card assets only
             ImageResizeNN(&cardImage, 128, 128);
+        }
+        if (i == 55) {
+            SetWindowIcon(cardImage);
         }
         Texture2D cardTexture = LoadTextureFromImage(cardImage);
         UnloadImage(cardImage);
@@ -78,6 +81,11 @@ void App::Run() {
                 gamestate = 3;
                 break;
             }
+            if (dealer->GetDeckSum() > 21) {
+                ticks = 0;
+                gamestate = 3;
+                break;
+            }
             //
 
 
@@ -115,6 +123,11 @@ void App::Run() {
                 if (dealer->GetDeckSum() > 21) {
                     ticks = 0;
                     gamestate = 3;
+                    break;
+                }
+                if (dealer->GetDeckSum() == 21) {
+                    ticks = 0;
+                    gamestate = 4;
                     break;
                 }
             }
