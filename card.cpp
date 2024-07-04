@@ -21,5 +21,11 @@ void Card::SetSymbol(int newsymbol) {
     symbol = newsymbol;
 }
 void Card::Draw(std::vector<Texture2D> textures) {
-    DrawTexture(textures[value-1 + (symbol-1) * 13], GetPos().first - GetSize().first/2, GetPos().second - GetSize().second/2, WHITE);
+    if (value == 14) {
+        DrawTexture(textures[52], GetPos().first - GetSize().first/2, GetPos().second - GetSize().second/2, WHITE);    
+    }
+    else if (value != 14) {
+        DrawTexture(textures[value-1 + (symbol-1) * 13], GetPos().first - GetSize().first/2, GetPos().second - GetSize().second/2, WHITE);
+    }
+
 }

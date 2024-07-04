@@ -4,12 +4,12 @@
 #include "include/blackjack.h"
 
 void App::LoadImages() {
-    for (int i = 1; i < 56; i++) {
+    for (int i = 1; i < 57; i++) {
         Image cardImage = LoadImage(TextFormat("assets/card%i.png", i));
-        if (i < 53) { // For card assets only
+        if (i < 54) { // For card assets only
             ImageResizeNN(&cardImage, 128, 128);
         }
-        if (i == 55) {
+        if (i == 56) {
             SetWindowIcon(cardImage);
         }
         Texture2D cardTexture = LoadTextureFromImage(cardImage);
@@ -29,15 +29,9 @@ void App::Run() {
 
     bool keyIsUpZ;
     bool keyIsUpX;
-    int gamestate = 0; // (0) - take 2 cards; (1) - keep taking cards; (2) - compare cards with dealer; (3) - game ends
-    enum gamestate {
-        START,
-        TAKECARDS,
-        DEALERCARDS,
-        WIN,
-        LOSS
-    };
-    int ticks = 0;
+    
+    Card* housecard = new Card({100, 100}, {0, 0}, {128, 128});
+    housecard->SetValue(14); // Backside card value
 
     while (WindowShouldClose() == false){
         ticks++;
@@ -46,15 +40,16 @@ void App::Run() {
         // Window deco
         ClearBackground(CASTLETON);
         DrawRectangle(0, SCREENSIZE.second/2, SCREENSIZE.first, SCREENSIZE.second/2, {BANGLADESH});
+        housecard->Draw(textures);
         
         int dealersum = dealer->GetDeckSum();
         if (player->GetDeckSum() > 21) DrawText(TextFormat("%i", player->GetDeckSum()), 0+10, SCREENSIZE.second-40, 30, ROSE);
         else DrawText(TextFormat("%i", player->GetDeckSum()), 0+10, SCREENSIZE.second-40, 30, BLACK);
         if (dealer->GetDeckSum() > 21) DrawText(TextFormat("%i", dealersum), 0+10, SCREENSIZE.second/2-40, 30, ROSE);
         else DrawText(TextFormat("%i", dealersum), 0+10, SCREENSIZE.second/2-40, 30, BLACK);
-        DrawTexture(textures[52], SCREENSIZE.first-116, SCREENSIZE.second/2+16, WHITE);
+        DrawTexture(textures[53], SCREENSIZE.first-116, SCREENSIZE.second/2+16, WHITE);
         DrawText("Hit", SCREENSIZE.first-82, SCREENSIZE.second/2+20, 24, WHITE);
-        DrawTexture(textures[53], SCREENSIZE.first-116, SCREENSIZE.second/2+64, WHITE);
+        DrawTexture(textures[54], SCREENSIZE.first-116, SCREENSIZE.second/2+64, WHITE);
         DrawText("Stand", SCREENSIZE.first-82, SCREENSIZE.second/2+68, 24, WHITE);
 
         //DrawText(TextFormat("%i", ticks), 0, 0, 30, RED); // uncomment for ticks debug

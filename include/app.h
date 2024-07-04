@@ -19,6 +19,15 @@ class App {
         void Init();
         void Run();
         std::vector<Texture2D> textures = {};
+        enum gamestate {
+            START,
+            TAKECARDS,
+            DEALERCARDS,
+            WIN,
+            LOSS
+        };
+        int gamestate = 0; // enum gamestate <-
+        int ticks = 0;
 };
 
 #endif

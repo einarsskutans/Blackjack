@@ -25,7 +25,6 @@ class Player { // Also the dealer
 
         // Graphics
         void DrawCards(std::vector<Texture2D> textures, std::pair<int, int> position, std::pair<int, int> offset);
-
     private:
         std::vector<Card*> deck;
         std::string name;
