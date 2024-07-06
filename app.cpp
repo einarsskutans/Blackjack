@@ -40,7 +40,8 @@ void App::Run() {
         // Window deco
         ClearBackground(CASTLETON);
         DrawRectangle(0, SCREENSIZE.second/2, SCREENSIZE.first, SCREENSIZE.second/2, {BANGLADESH});
-        housecard->Draw(textures);
+            //housecard->Draw(textures); ugly for now
+        
         
         int dealersum = dealer->GetDeckSum();
         if (player->GetDeckSum() > 21) DrawText(TextFormat("%i", player->GetDeckSum()), 0+10, SCREENSIZE.second-40, 30, ROSE);
