@@ -29,6 +29,8 @@ void App::Run() {
 
     bool keyIsUpZ;
     bool keyIsUpX;
+    int playersum;
+    int dealersum;
     
     Card* housecard = new Card({100, 100}, {0, 0}, {128, 128});
     housecard->SetValue(14); // Backside card value
@@ -42,11 +44,11 @@ void App::Run() {
         DrawRectangle(0, SCREENSIZE.second/2, SCREENSIZE.first, SCREENSIZE.second/2, {BANGLADESH});
             //housecard->Draw(textures); ugly for now
         
-        
-        int dealersum = dealer->GetDeckSum();
-        if (player->GetDeckSum() > 21) DrawText(TextFormat("%i", player->GetDeckSum()), 0+10, SCREENSIZE.second-40, 30, ROSE);
-        else DrawText(TextFormat("%i", player->GetDeckSum()), 0+10, SCREENSIZE.second-40, 30, BLACK);
-        if (dealer->GetDeckSum() > 21) DrawText(TextFormat("%i", dealersum), 0+10, SCREENSIZE.second/2-40, 30, ROSE);
+        playersum = player->GetDeckSum();
+        dealersum = dealer->GetDeckSum();
+        if (playersum > 21) DrawText(TextFormat("%i", playersum), 0+10, SCREENSIZE.second-40, 30, ROSE);
+        else DrawText(TextFormat("%i", playersum), 0+10, SCREENSIZE.second-40, 30, BLACK);
+        if (dealersum > 21) DrawText(TextFormat("%i", dealersum), 0+10, SCREENSIZE.second/2-40, 30, ROSE);
         else DrawText(TextFormat("%i", dealersum), 0+10, SCREENSIZE.second/2-40, 30, BLACK);
         DrawTexture(textures[53], SCREENSIZE.first-116, SCREENSIZE.second/2+16, WHITE);
         DrawText("Hit", SCREENSIZE.first-82, SCREENSIZE.second/2+20, 24, WHITE);
@@ -63,19 +65,21 @@ void App::Run() {
             dealer->Hit();
             player->Hit();
             player->Hit();
-
+            playersum = player->GetDeckSum();
+            dealersum = dealer->GetDeckSum();
+            
             // Conditions for a Blackjack -> starting cards = 21
-            if (dealer->GetDeckSum() == 21 && player->GetDeckSum() == 21) {
+            if (dealersum == 21 && playersum == 21) {
                 ticks = 0;
                 gamestate = TIE;
                 break;
             }
-            if (dealer->GetDeckSum() == 21) {
+            if (dealersum == 21) {
                 ticks = 0;
                 gamestate = LOSS;
                 break;
             }
-            if (player->GetDeckSum() == 21) {
+            if (playersum == 21) {
                 ticks = 0;
                 gamestate = WIN;
                 break;
@@ -84,12 +88,12 @@ void App::Run() {
             break;
         case TAKECARDS: // Taking cards
             // Conditions
-            if (player->GetDeckSum() > 21) {
+            if (playersum > 21) {
                 ticks = 0;
                 gamestate = LOSS;
                 break;
             }
-            if (dealer->GetDeckSum() > 21) {
+            if (dealersum > 21) {
                 ticks = 0;
                 gamestate = WIN;
                 break;
@@ -116,20 +120,20 @@ void App::Run() {
         case DEALERCARDS:
             if (ticks > FPS * 1) {
                 ticks = 0;
-                if (dealer->GetDeckSum() > 21) {
+                if (dealersum > 21) {
                     ticks = 0;
                     gamestate = WIN;
                     break;
                 }
-                if (dealer->GetDeckSum() == 21 && player->GetDeckSum() == 21) {
+                if (dealersum == 21 && playersum == 21) {
                     gamestate = TIE;
                 }
-                if (dealer->GetDeckSum() > player->GetDeckSum() && dealer->GetDeckSum() < 22) {
+                if (dealersum > playersum && dealersum < 22) {
                     ticks = 0;
                     gamestate = LOSS;
                     break;
                 }
-                if (dealer->GetDeckSum() <= player->GetDeckSum() && dealer->GetDeckSum() != 21) {
+                if (dealersum <= playersum && dealersum != 21) {
                     dealer->Hit();
                     break;
                 }
