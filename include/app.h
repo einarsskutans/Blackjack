@@ -24,7 +24,8 @@ class App {
             TAKECARDS,
             DEALERCARDS,
             WIN,
-            LOSS
+            LOSS,
+            TIE
         };
         int gamestate = 0; // enum gamestate <-
         int ticks = 0;

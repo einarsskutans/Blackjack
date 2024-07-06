@@ -1,11 +1,6 @@
 #ifndef BLACKJACK
 #define BLACKJACK
 
-/*
-    Quick notes - dealer here is at a disatvantage as there is no tie when both players
-    take cards of 21 total, the dealer will always lose :(
-*/
-
 #include <iostream>
 #include <vector>
 #include <utility>
@@ -27,9 +22,8 @@ std::string Player::GetPlayerName() {
 };
 
 bool Player::Hit() {
-    //Card* card = new Card({SCREENSIZE.first/2, SCREENSIZE.second/2}, {0, 0}, {64, 128});
-    //card->SetValue(std::rand()%12+1);
     Card* card = House::GetCard();
+    card->SetValue(3); // temp
     deck.push_back(card);
     return true;
 };

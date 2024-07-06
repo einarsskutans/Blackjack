@@ -63,27 +63,37 @@ void App::Run() {
             dealer->Hit();
             player->Hit();
             player->Hit();
-            gamestate = 1;
+
+            // Conditions for a Blackjack -> starting cards = 21
+            if (dealer->GetDeckSum() == 21 && player->GetDeckSum() == 21) {
+                ticks = 0;
+                gamestate = TIE;
+                break;
+            }
+            if (dealer->GetDeckSum() == 21) {
+                ticks = 0;
+                gamestate = LOSS;
+                break;
+            }
+            if (player->GetDeckSum() == 21) {
+                ticks = 0;
+                gamestate = WIN;
+                break;
+            }
+            gamestate = TAKECARDS;
             break;
         case TAKECARDS: // Taking cards
             // Conditions
             if (player->GetDeckSum() > 21) {
                 ticks = 0;
-                gamestate = 4;
-                break;
-            }
-            if (player->GetDeckSum() == 21) {
-                ticks = 0;
-                gamestate = 3;
+                gamestate = LOSS;
                 break;
             }
             if (dealer->GetDeckSum() > 21) {
                 ticks = 0;
-                gamestate = 3;
+                gamestate = WIN;
                 break;
             }
-            //
-
 
             // Key events
             if (IsKeyDown(KEY_Z) && keyIsUpZ) {
@@ -102,28 +112,25 @@ void App::Run() {
             if (IsKeyUp(KEY_X)) {
                 keyIsUpX = true;
             }
-        
             break;
         case DEALERCARDS:
             if (ticks > FPS * 1) {
                 ticks = 0;
-                if (dealer->GetDeckSum() > player->GetDeckSum() && dealer->GetDeckSum() < 22) {
-                    ticks = 0;
-                    gamestate = 4;
-                    break;
-                }
-                if (dealer->GetDeckSum() <= player->GetDeckSum()) {
-                    dealer->Hit();
-                    break;
-                }
                 if (dealer->GetDeckSum() > 21) {
                     ticks = 0;
-                    gamestate = 3;
+                    gamestate = WIN;
                     break;
                 }
-                if (dealer->GetDeckSum() == 21) {
+                if (dealer->GetDeckSum() == 21 && player->GetDeckSum() == 21) {
+                    gamestate = TIE;
+                }
+                if (dealer->GetDeckSum() > player->GetDeckSum() && dealer->GetDeckSum() < 22) {
                     ticks = 0;
-                    gamestate = 4;
+                    gamestate = LOSS;
+                    break;
+                }
+                if (dealer->GetDeckSum() <= player->GetDeckSum() && dealer->GetDeckSum() != 21) {
+                    dealer->Hit();
                     break;
                 }
             }
@@ -132,7 +139,7 @@ void App::Run() {
             DrawText("You win", 0+10, SCREENSIZE.second/2 + 40, 30, BLACK);
             if (ticks > FPS * 1.5) {
                 ticks = 0;
-                gamestate = 0;
+                gamestate = START;
                 player->ResetDeck();
                 dealer->ResetDeck();
                 break;
@@ -142,16 +149,25 @@ void App::Run() {
             DrawText("You lose", 0+10, SCREENSIZE.second/2 + 40, 30, BLACK);
             if (ticks > FPS * 1.5) {
                 ticks = 0;
-                gamestate = 0;
+                gamestate = START;
                 player->ResetDeck();
                 dealer->ResetDeck();
                 break;
             }
             break;
-
+        case TIE:
+            DrawText("Tie", 0+10, SCREENSIZE.second/2 + 40, 30, BLACK);
+            if (ticks > FPS * 1.5) {
+                ticks = 0;
+                gamestate = START;
+                player->ResetDeck();
+                dealer->ResetDeck();
+                break;
+            }
         default:
             break;
         }
+
         if (player->GetDeck().size() > 0) {
             player->DrawCards(textures, {SCREENSIZE.first/2, SCREENSIZE.second*0.64}, {-player->GetDeck()[0]->GetSize().first/4, player->GetDeck()[0]->GetSize().second/6}); // Always keep cards drawn
         }
