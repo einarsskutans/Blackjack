@@ -23,7 +23,6 @@ std::string Player::GetPlayerName() {
 
 bool Player::Hit() {
     Card* card = House::GetCard();
-    //card->SetValue((std::rand()%2)+10); // temp
     deck.push_back(card);
     return true;
 };

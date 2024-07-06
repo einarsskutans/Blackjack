@@ -67,7 +67,7 @@ void App::Run() {
             player->Hit();
             playersum = player->GetDeckSum();
             dealersum = dealer->GetDeckSum();
-            
+
             // Conditions for a Blackjack -> starting cards = 21
             if (dealersum == 21 && playersum == 21) {
                 ticks = 0;
@@ -180,7 +180,16 @@ void App::Run() {
         }
         EndDrawing();
     }
-    player->PrintDeck();
     delete player;
+    delete dealer;
+    for (Card* card : player->GetDeck()) {
+        delete card;
+    }
+    for (Card* card : dealer->GetDeck()) {
+        delete card;
+    }
+    for (Card* card : House::GetDeck()) {
+        delete card;
+    }
     CloseWindow();
 } 
