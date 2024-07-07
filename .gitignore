@@ -5,3 +5,6 @@ main
 bin/
 lib/
 makefile
+makefile
+.dll
+.gitattributes
