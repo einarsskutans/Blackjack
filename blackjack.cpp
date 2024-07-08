@@ -26,9 +26,6 @@ bool Player::Hit() {
     deck.push_back(card);
     return true;
 };
-bool Player::Stand() {
-    return true;
-};
 int Player::GetDeckSum() {
     int sum = 0;
     for (Card* card : deck) {
@@ -39,31 +36,6 @@ int Player::GetDeckSum() {
 std::vector<Card*> Player::GetDeck() {
     return deck;
 };
-void Player::PrintDeck() {
-    std::string mydeck;
-    mydeck = "";
-    for (Card* card : deck) {
-        switch (card->GetValue())
-            {
-            case 1:
-                mydeck += "ace\n";
-                break;
-            case 11:
-                mydeck += "valet\n";
-                break;
-            case 12:
-                mydeck += "queen\n";
-                break;
-            case 13:
-                mydeck += "king\n";
-                break;
-            
-            default:
-                mydeck += std::to_string(card->GetValue()) + "\n";
-            }
-    }
-    std::cout << mydeck;
-}
 void Player::ResetDeck() {
     deck = {};
 };

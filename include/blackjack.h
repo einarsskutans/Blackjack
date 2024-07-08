@@ -12,10 +12,8 @@ class Player { // Also the dealer
         std::string GetPlayerName();
 
         bool Hit();
-        bool Stand();
         int GetDeckSum();
         std::vector<Card*> GetDeck();
-        void PrintDeck();
         void ResetDeck();
         void SetBalance(int newbalance);
         int GetBalance();
