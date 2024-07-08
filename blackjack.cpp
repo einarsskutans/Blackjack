@@ -67,6 +67,18 @@ void Player::PrintDeck() {
 void Player::ResetDeck() {
     deck = {};
 };
+void Player::SetBalance(int newbalance) {
+    balance = newbalance;
+}
+int Player::GetBalance() {
+    return balance;
+}
+void Player::SetBet(int newbet) {
+    bet = newbet;
+}
+int Player::GetBet() {
+    return bet;
+}
 
 void Player::DrawCards(std::vector<Texture2D> textures, std::pair<int, int> position, std::pair<int, int> offset) {
     int cardWidth = deck[0]->GetSize().first;

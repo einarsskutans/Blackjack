@@ -1,11 +1,6 @@
 #ifndef BLACKJACK_H
 #define BLACKJACK_H
 
-/*
-    Quick notes - dealer here is at a disatvantage as there is no tie when both players
-    take cards of 21 total, the dealer will always lose :(
-*/
-
 #include <vector>
 #include <string>
 #include "card.h"
@@ -22,12 +17,18 @@ class Player { // Also the dealer
         std::vector<Card*> GetDeck();
         void PrintDeck();
         void ResetDeck();
+        void SetBalance(int newbalance);
+        int GetBalance();
+        void SetBet(int newbet);
+        int GetBet();
 
         // Graphics
         void DrawCards(std::vector<Texture2D> textures, std::pair<int, int> position, std::pair<int, int> offset);
     private:
         std::vector<Card*> deck;
         std::string name;
+        int balance = 200;
+        int bet = 0;
 };
 
 class House {
