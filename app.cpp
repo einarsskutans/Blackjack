@@ -42,7 +42,6 @@ void App::Run() {
         // Window deco
         ClearBackground(CASTLETON);
         DrawRectangle(0, SCREENSIZE.second/2, SCREENSIZE.first, SCREENSIZE.second/2, {BANGLADESH});
-            //housecard->Draw(textures); ugly for now
         
         playersum = player->GetDeckSum();
         dealersum = dealer->GetDeckSum();
@@ -68,7 +67,7 @@ void App::Run() {
             playersum = player->GetDeckSum();
             dealersum = dealer->GetDeckSum();
 
-            // Conditions for a Blackjack -> starting cards = 21
+            // Conditionals for a Blackjack -> starting cards = 21
             if (dealersum == 21 && playersum == 21) {
                 ticks = 0;
                 gamestate = TIE;
@@ -87,7 +86,7 @@ void App::Run() {
             gamestate = TAKECARDS;
             break;
         case TAKECARDS: // Taking cards
-            // Conditions
+            // Conditionals
             if (playersum > 21) {
                 ticks = 0;
                 gamestate = LOSS;
@@ -180,8 +179,6 @@ void App::Run() {
         }
         EndDrawing();
     }
-    delete player;
-    delete dealer;
     for (Card* card : player->GetDeck()) {
         delete card;
     }
@@ -191,5 +188,7 @@ void App::Run() {
     for (Card* card : House::GetDeck()) {
         delete card;
     }
+    delete player;
+    delete dealer;
     CloseWindow();
 } 

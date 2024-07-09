@@ -29,7 +29,7 @@ bool Player::Hit() {
 int Player::GetDeckSum() {
     int sum = 0;
     for (Card* card : deck) {
-        sum += card->GetValue();
+        sum += card->GetGameValue();
     }
     return sum;
 };
@@ -73,6 +73,9 @@ void House::GenerateDeck() {
         for (int symbol = 1; symbol < 5; symbol++) {
             Card* card = new Card({SCREENSIZE.first/2, SCREENSIZE.second/2}, {0, 0}, {64, 128});
             card->SetValue(value);
+            card->SetGameValue(value);
+            if (value > 10) card->SetGameValue(10); // Faces are 10
+            if (value == 1) card->SetGameValue(11); // Ace is 11
             card->SetSymbol(symbol);
             House::deck.push_back(card);
         }

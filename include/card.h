@@ -12,10 +12,13 @@ class Card : public Sprite {
         void SetValue(int newvalue);
         int GetSymbol();
         void SetSymbol(int newsymbol);
+        int GetGameValue();
+        void SetGameValue(int newvalue);
         void Draw(std::vector<Texture2D> textures);
     private:
         int value;
-        int symbol; // Might not be relevant
+        int gameValue;
+        int symbol;
 };
 
 #endif

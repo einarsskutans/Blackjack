@@ -20,12 +20,12 @@ int Card::GetSymbol() {
 void Card::SetSymbol(int newsymbol) {
     symbol = newsymbol;
 }
+int Card::GetGameValue() {
+    return gameValue;
+}
+void Card::SetGameValue(int newvalue) {
+    gameValue = newvalue;
+}
 void Card::Draw(std::vector<Texture2D> textures) {
-    if (value == 14) {
-        DrawTexture(textures[52], GetPos().first - GetSize().first/2, GetPos().second - GetSize().second/2, WHITE);    
-    }
-    else if (value != 14) {
-        DrawTexture(textures[value-1 + (symbol-1) * 13], GetPos().first - GetSize().first/2, GetPos().second - GetSize().second/2, WHITE);
-    }
-
+    DrawTexture(textures[value-1 + (symbol-1) * 13], GetPos().first - GetSize().first/2, GetPos().second - GetSize().second/2, WHITE);
 }
