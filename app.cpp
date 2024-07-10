@@ -4,7 +4,7 @@
 #include "include/blackjack.h"
 
 void App::LoadImages() {
-    for (int i = 1; i < 57; i++) {
+    for (int i = 1; i < 59; i++) {
         Image cardImage = LoadImage(TextFormat("assets/card%i.png", i));
         if (i < 54) { // For card assets only
             ImageResizeNN(&cardImage, 128, 128);
@@ -38,29 +38,52 @@ void App::Run() {
     while (WindowShouldClose() == false){
         ticks++;
         BeginDrawing();
+        playersum = player->GetDeckSum();
+        dealersum = dealer->GetDeckSum();
 
         // Window deco
         ClearBackground(CASTLETON);
         DrawRectangle(0, SCREENSIZE.second/2, SCREENSIZE.first, SCREENSIZE.second/2, {BANGLADESH});
-        
-        playersum = player->GetDeckSum();
-        dealersum = dealer->GetDeckSum();
-        if (playersum > 21) DrawText(TextFormat("%i", playersum), 0+10, SCREENSIZE.second-40, 30, ROSE);
-        else DrawText(TextFormat("%i", playersum), 0+10, SCREENSIZE.second-40, 30, BLACK);
-        if (dealersum > 21) DrawText(TextFormat("%i", dealersum), 0+10, SCREENSIZE.second/2-40, 30, ROSE);
-        else DrawText(TextFormat("%i", dealersum), 0+10, SCREENSIZE.second/2-40, 30, BLACK);
-        DrawTexture(textures[53], SCREENSIZE.first-116, SCREENSIZE.second/2+16, WHITE);
-        DrawText("Hit", SCREENSIZE.first-82, SCREENSIZE.second/2+20, 24, WHITE);
-        DrawTexture(textures[54], SCREENSIZE.first-116, SCREENSIZE.second/2+64, WHITE);
-        DrawText("Stand", SCREENSIZE.first-82, SCREENSIZE.second/2+68, 24, WHITE);
 
-        DrawText(TextFormat("$%i", player->GetBalance()), 0+60, SCREENSIZE.second-40, 30, WHITE);
-        DrawText(TextFormat("$%i", dealer->GetBalance()), 0+60, SCREENSIZE.second/2-40, 30, WHITE);
+        if (playersum > 21) DrawText(TextFormat("%i", playersum), 0+10, SCREENSIZE.second-40, 30, ROSE);
+        else DrawText(TextFormat("%i", playersum), SCREENSIZE.first/108, SCREENSIZE.second-40, 30, BLACK);
+        if (dealersum > 21) DrawText(TextFormat("%i", dealersum), 0+10, SCREENSIZE.second/2-40, 30, ROSE);
+        else DrawText(TextFormat("%i", dealersum), SCREENSIZE.first/108, SCREENSIZE.second/2-40, 30, BLACK);
+
+        DrawTexture(textures[KEYZICON], SCREENSIZE.first/1.2, SCREENSIZE.second/1.9, WHITE);
+        DrawText("Hit", SCREENSIZE.first/1.14, SCREENSIZE.second/1.9+6, 20, WHITE);
+        DrawTexture(textures[KEYXICON], SCREENSIZE.first/1.2, SCREENSIZE.second/1.9+40, WHITE);
+        DrawText("Stand", SCREENSIZE.first/1.14, SCREENSIZE.second/1.9+46, 20, WHITE);
+        DrawTexture(textures[KEYCICON], SCREENSIZE.first/1.2, SCREENSIZE.second/1.9+240, WHITE);
+        DrawText("Bet incr.", SCREENSIZE.first/1.14, SCREENSIZE.second/1.9+246, 20, WHITE);
+        DrawTexture(textures[KEYVICON], SCREENSIZE.first/1.2, SCREENSIZE.second/1.9+280, WHITE);
+        DrawText("Bet decr.", SCREENSIZE.first/1.14, SCREENSIZE.second/1.9+286, 20, WHITE);
+
+        DrawText(TextFormat("Balance: $%i", player->GetBalance()), SCREENSIZE.first/108, SCREENSIZE.second/1.9, 20, WHITE);
+        DrawText(TextFormat("Bet: $%i", player->GetBet()), SCREENSIZE.first/108, SCREENSIZE.second/1.9+36, 20, WHITE);    
 
         //DrawText(TextFormat("%i", ticks), 0, 0, 30, RED); // uncomment for ticks debug
 
         switch (gamestate)
         {
+        case BET:
+            if (IsKeyDown(KEY_Z) && keyIsUpZ) {
+                keyIsUpZ = false;
+                gamestate = START;
+                break;
+            }
+            if (IsKeyUp(KEY_Z)) {
+                keyIsUpZ = true;
+            }
+            if (IsKeyPressed(KEY_C)) {
+                player->SetBet(player->GetBet()+50);
+                dealer->SetBet(dealer->GetBet()+50);
+            }
+            if (IsKeyPressed(KEY_V)) {
+                player->SetBet(player->GetBet()-50);
+                dealer->SetBet(dealer->GetBet()-50);
+            }
+            break;
         case START: // Game start; take 2 cards
             House::GenerateDeck();
             dealer->Hit();
@@ -108,10 +131,10 @@ void App::Run() {
                 keyIsUpZ = false;
                 player->Hit();
             }            
-            if (IsKeyDown(KEY_X) && gamestate == 1 && keyIsUpX) {
+            if (IsKeyDown(KEY_X) && gamestate == TAKECARDS && keyIsUpX) {
                 ticks = 0;
                 keyIsUpX = false;
-                gamestate = 2;
+                gamestate = DEALERCARDS;
                 break;
             }
             if (IsKeyUp(KEY_Z)) {
@@ -144,10 +167,10 @@ void App::Run() {
             }
             break;
         case WIN:
-            DrawText("You win", 0+10, SCREENSIZE.second/2 + 40, 30, BLACK);
+            DrawText("You win", SCREENSIZE.first/108, SCREENSIZE.second/1.9 + 66, 30, BLACK);
             if (ticks > FPS * 1.5) {
                 ticks = 0;
-                gamestate = START;
+                gamestate = BET;
                 player->AddBalance(player->GetBet()+dealer->GetBet());
                 player->ResetDeck();
                 dealer->ResetDeck();
@@ -155,10 +178,10 @@ void App::Run() {
             }
             break;
         case LOSS:
-            DrawText("You lose", 0+10, SCREENSIZE.second/2 + 40, 30, BLACK);
+            DrawText("You lose", SCREENSIZE.first/108, SCREENSIZE.second/1.9 + 66, 30, BLACK);
             if (ticks > FPS * 1.5) {
                 ticks = 0;
-                gamestate = START;
+                gamestate = BET;
                 dealer->AddBalance(player->GetBet()+dealer->GetBet());
                 player->ResetDeck();
                 dealer->ResetDeck();
@@ -166,10 +189,10 @@ void App::Run() {
             }
             break;
         case TIE:
-            DrawText("Tie", 0+10, SCREENSIZE.second/2 + 40, 30, BLACK);
+            DrawText("Tie", SCREENSIZE.first/108, SCREENSIZE.second/1.9 + 66, 30, BLACK);
             if (ticks > FPS * 1.5) {
                 ticks = 0;
-                gamestate = START;
+                gamestate = BET;
                 player->AddBalance(player->GetBet());
                 dealer->AddBalance(dealer->GetBet());
                 player->ResetDeck();

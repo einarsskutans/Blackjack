@@ -10,7 +10,7 @@
 #define BANGLADESH (Color){0, 106, 78, 255} // Bangladesh green
 #define ROSE (Color){178,28,14, 255} // Rose red
 
-const std::pair<int, int> SCREENSIZE = {720, 540};
+const std::pair<int, int> SCREENSIZE = {1080, 720};
 const int FPS = 60;
 
 class App {
@@ -20,12 +20,19 @@ class App {
         void Run();
         std::vector<Texture2D> textures = {};
         enum gamestate {
+            BET,
             START,
             TAKECARDS,
             DEALERCARDS,
             WIN,
             LOSS,
             TIE
+        };
+        enum textures {
+            KEYZICON = 53,
+            KEYXICON = 54,
+            KEYVICON = 56,
+            KEYCICON = 57
         };
         int gamestate = 0; // enum gamestate <-
         int ticks = 0;
