@@ -26,7 +26,8 @@ class App {
             DEALERCARDS,
             WIN,
             LOSS,
-            TIE
+            TIE,
+            TOTALLOSS
         };
         enum textures {
             KEYZICON = 53,

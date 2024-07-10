@@ -60,7 +60,10 @@ void App::Run() {
         DrawText("Bet decr.", SCREENSIZE.first/1.14, SCREENSIZE.second/1.9+286, 20, WHITE);
 
         DrawText(TextFormat("Balance: $%i", player->GetBalance()), SCREENSIZE.first/108, SCREENSIZE.second/1.9, 20, WHITE);
-        DrawText(TextFormat("Bet: $%i", player->GetBet()), SCREENSIZE.first/108, SCREENSIZE.second/1.9+36, 20, WHITE);    
+        if (player->GetBalance()>-1000)
+        DrawText(TextFormat("Bet: $%i", player->GetBet()), SCREENSIZE.first/108, SCREENSIZE.second/1.9+36, 20, WHITE);
+        else if (player->GetBalance()<-999)
+        DrawText(TextFormat("Bet: LIFE SAVINGS", player->GetBet()), SCREENSIZE.first/108, SCREENSIZE.second/1.9+36, 20, WHITE);
 
         //DrawText(TextFormat("%i", ticks), 0, 0, 30, RED); // uncomment for ticks debug
 
@@ -79,7 +82,7 @@ void App::Run() {
                 player->SetBet(player->GetBet()+50);
                 dealer->SetBet(dealer->GetBet()+50);
             }
-            if (IsKeyPressed(KEY_V)) {
+            if (IsKeyPressed(KEY_V) && player->GetBet() > 50) {
                 player->SetBet(player->GetBet()-50);
                 dealer->SetBet(dealer->GetBet()-50);
             }
@@ -170,8 +173,14 @@ void App::Run() {
             DrawText("You win", SCREENSIZE.first/108, SCREENSIZE.second/1.9 + 66, 30, BLACK);
             if (ticks > FPS * 1.5) {
                 ticks = 0;
-                gamestate = BET;
-                player->AddBalance(player->GetBet()+dealer->GetBet());
+                if (player->GetBalance()>-1000) {
+                    gamestate = BET;
+                    player->AddBalance(player->GetBet()+dealer->GetBet());
+                }
+                if (player->GetBalance()<-999) {
+                    gamestate = BET;
+                    player->SetBalance(50);
+                }
                 player->ResetDeck();
                 dealer->ResetDeck();
                 break;
@@ -181,7 +190,8 @@ void App::Run() {
             DrawText("You lose", SCREENSIZE.first/108, SCREENSIZE.second/1.9 + 66, 30, BLACK);
             if (ticks > FPS * 1.5) {
                 ticks = 0;
-                gamestate = BET;
+                if (player->GetBalance()>-1000) gamestate = BET;
+                if (player->GetBalance()<-999) gamestate = TOTALLOSS;
                 dealer->AddBalance(player->GetBet()+dealer->GetBet());
                 player->ResetDeck();
                 dealer->ResetDeck();
@@ -199,6 +209,9 @@ void App::Run() {
                 dealer->ResetDeck();
                 break;
             }
+        case TOTALLOSS:
+            DrawText("You lost all of your money, whoops?\n\n\nWell you can't continue, quit now.", SCREENSIZE.first/108, SCREENSIZE.second/1.9 + 66, 30, BLACK);
+            break;
         default:
             break;
         }
