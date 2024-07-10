@@ -54,6 +54,9 @@ void App::Run() {
         DrawTexture(textures[54], SCREENSIZE.first-116, SCREENSIZE.second/2+64, WHITE);
         DrawText("Stand", SCREENSIZE.first-82, SCREENSIZE.second/2+68, 24, WHITE);
 
+        DrawText(TextFormat("$%i", player->GetBalance()), 0+60, SCREENSIZE.second-40, 30, WHITE);
+        DrawText(TextFormat("$%i", dealer->GetBalance()), 0+60, SCREENSIZE.second/2-40, 30, WHITE);
+
         //DrawText(TextFormat("%i", ticks), 0, 0, 30, RED); // uncomment for ticks debug
 
         switch (gamestate)
@@ -64,6 +67,8 @@ void App::Run() {
             dealer->Hit();
             player->Hit();
             player->Hit();
+            player->AddBalance(-player->GetBet());
+            dealer->AddBalance(-dealer->GetBet());
             playersum = player->GetDeckSum();
             dealersum = dealer->GetDeckSum();
 
@@ -143,6 +148,7 @@ void App::Run() {
             if (ticks > FPS * 1.5) {
                 ticks = 0;
                 gamestate = START;
+                player->AddBalance(player->GetBet()+dealer->GetBet());
                 player->ResetDeck();
                 dealer->ResetDeck();
                 break;
@@ -153,6 +159,7 @@ void App::Run() {
             if (ticks > FPS * 1.5) {
                 ticks = 0;
                 gamestate = START;
+                dealer->AddBalance(player->GetBet()+dealer->GetBet());
                 player->ResetDeck();
                 dealer->ResetDeck();
                 break;
@@ -163,6 +170,8 @@ void App::Run() {
             if (ticks > FPS * 1.5) {
                 ticks = 0;
                 gamestate = START;
+                player->AddBalance(player->GetBet());
+                dealer->AddBalance(dealer->GetBet());
                 player->ResetDeck();
                 dealer->ResetDeck();
                 break;

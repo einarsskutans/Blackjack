@@ -45,6 +45,9 @@ void Player::SetBalance(int newbalance) {
 int Player::GetBalance() {
     return balance;
 }
+void Player::AddBalance(int newbalance) {
+    balance += newbalance;
+}
 void Player::SetBet(int newbet) {
     bet = newbet;
 }

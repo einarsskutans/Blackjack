@@ -17,6 +17,7 @@ class Player { // Also the dealer
         void ResetDeck();
         void SetBalance(int newbalance);
         int GetBalance();
+        void AddBalance(int newbalance);
         void SetBet(int newbet);
         int GetBet();
 
@@ -26,7 +27,7 @@ class Player { // Also the dealer
         std::vector<Card*> deck;
         std::string name;
         int balance = 200;
-        int bet = 0;
+        int bet = 50;
 };
 
 class House {
