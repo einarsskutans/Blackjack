@@ -60,16 +60,15 @@ void App::Run() {
         DrawText("Bet decr.", SCREENSIZE.first/1.14, SCREENSIZE.second/1.9+286, 20, WHITE);
 
         DrawText(TextFormat("Balance: $%i", player->GetBalance()), SCREENSIZE.first/108, SCREENSIZE.second/1.9, 20, WHITE);
-        if (player->GetBalance()>-1000)
         DrawText(TextFormat("Bet: $%i", player->GetBet()), SCREENSIZE.first/108, SCREENSIZE.second/1.9+36, 20, WHITE);
-        else if (player->GetBalance()<-999)
-        DrawText(TextFormat("Bet: LIFE SAVINGS", player->GetBet()), SCREENSIZE.first/108, SCREENSIZE.second/1.9+36, 20, WHITE);
 
         //DrawText(TextFormat("%i", ticks), 0, 0, 30, RED); // uncomment for ticks debug
 
         switch (gamestate)
         {
         case BET:
+            DrawText("Place bet", SCREENSIZE.first/2.75, SCREENSIZE.second/1.5, 60, BLACK);
+            DrawText("Place bet", SCREENSIZE.first/2.75, SCREENSIZE.second/3.5, 60, BLACK);
             if (IsKeyDown(KEY_Z) && keyIsUpZ) {
                 keyIsUpZ = false;
                 gamestate = START;
@@ -78,7 +77,7 @@ void App::Run() {
             if (IsKeyUp(KEY_Z)) {
                 keyIsUpZ = true;
             }
-            if (IsKeyPressed(KEY_C)) {
+            if (IsKeyPressed(KEY_C) && player->GetBet() < player->GetBalance()) {
                 player->SetBet(player->GetBet()+50);
                 dealer->SetBet(dealer->GetBet()+50);
             }
@@ -190,8 +189,7 @@ void App::Run() {
             DrawText("You lose", SCREENSIZE.first/108, SCREENSIZE.second/1.9 + 66, 30, BLACK);
             if (ticks > FPS * 1.5) {
                 ticks = 0;
-                if (player->GetBalance()>-1000) gamestate = BET;
-                if (player->GetBalance()<-999) gamestate = TOTALLOSS;
+                gamestate = BET;
                 dealer->AddBalance(player->GetBet()+dealer->GetBet());
                 player->ResetDeck();
                 dealer->ResetDeck();
