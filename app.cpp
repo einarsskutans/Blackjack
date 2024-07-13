@@ -69,6 +69,7 @@ void App::Run() {
         case BET:
             DrawText("Place bet", SCREENSIZE.first/2.75, SCREENSIZE.second/1.5, 60, BLACK);
             DrawText("Place bet", SCREENSIZE.first/2.75, SCREENSIZE.second/3.5, 60, BLACK);
+            dealer->SetBet(player->GetBet());
             if (IsKeyDown(KEY_Z) && keyIsUpZ) {
                 keyIsUpZ = false;
                 gamestate = START;
@@ -79,12 +80,12 @@ void App::Run() {
             }
             if (IsKeyPressed(KEY_C) && player->GetBet() < player->GetBalance()) {
                 player->SetBet(player->GetBet()+50);
-                dealer->SetBet(dealer->GetBet()+50);
             }
             if (IsKeyPressed(KEY_V) && player->GetBet() > 50) {
                 player->SetBet(player->GetBet()-50);
-                dealer->SetBet(dealer->GetBet()-50);
             }
+            if (player->GetBet() > player->GetBalance()) player->SetBet(player->GetBalance());
+            if (player->GetBalance() == 0) player->SetBet(50);
             break;
         case START: // Game start; take 2 cards
             House::GenerateDeck();
